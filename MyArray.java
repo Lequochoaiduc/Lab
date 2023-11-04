@@ -13,78 +13,112 @@ public class MyArray {
 		this.array = array;
 	}
 
-	// task1.1
+	//Method mirror that outputs the contents of an array in a 
+//reverse order like a mirror 
+//Example: input [1, 2, 3] ==> output: [1, 2, 3, 3, 2, 1]
 	public int[] mirror() {
-		int[] result = new int[this.array.length * 2];
-		int mirrorIndex = result.length - 1;
-		for (int i = 0; i < array.length; i++) {
-			result[i] = array[i];
-			result[mirrorIndex--] = array[i];
+		int result[] = new int[this.array.length * 2];
+
+		int tmp = 0;
+		for (int i = 0; i < result.length; i++) {
+			if (i > array.length - 1) {
+				result[i] = array[array.length - tmp - 1];
+				tmp++;
+			} else {
+				result[i] = array[i];
+			}
+
 		}
 		return result;
-
 	}
 
-	/*
-	 * Task1.1
-	 * 
-	 */
-	public int[] removeDulicates() {
-		HashSet<Integer> set = new HashSet<>();
-		ArrayList<Integer> list = new ArrayList<>();
-		for (int num : array) {
-			if (!set.contains(num)) {
-				set.add(num);
-				list.add(num);
+	// removes all duplicate elements from an array and returns a
+	// new array
+	// Input: 1 3 5 1 3 7 9 8
+	// Output: 1 3 5 7 9 8
+	public int[] removeDuplicates() {
+		int tempArray[] = new int[array.length];
+		int count = 0;
+		for (int element : array) {
+			if (!isDuplicate(tempArray, element)) {
+				tempArray[count] = element;
+				count++;
+			}
+
+		}
+		int result[] = new int[count];
+		for (int i = 0; i < count; i++) {
+			result[i] = tempArray[i];
+		}
+
+		return result;
+	}
+
+	private boolean isDuplicate(int[] array, int element) {
+		for (int value : array) {
+			if (value == element) {
+				return true;
 			}
 		}
-		int[] newArray = new int[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			newArray[i] = list.get(i);
-		}
-		return newArray;
+
+		return false;
 	}
 
-	// task1.2
+	// Input: 10 11 12 13 14 16 17 19 20
+	// Output: 15 18
 	public int[] getMissingValues() {
-		HashSet<Integer> set = new HashSet<>(); // Tạo một HashSet để lưu trữ các phần tử trong mảng
-		for (int num : array) {// Duyệt qua mảng và thêm vào set
-			set.add(num);
-		}
-		ArrayList<Integer> list = new ArrayList<>();// Tạo một ArrayList để lưu trữ các số thiếu sót
-		for (int i = 1; i <= array.length; i++) {// Duyệt qua các số từ 1 đến n (n là số lượng phần tử trong mảng)
-			if (!set.contains(i)) { // Nếu số đó không có trong set
-				list.add(i); // Thêm vào list
+		int count = 0;
+		int i = 0;
+		int j = 1;
+		while (i < array.length - 1 && j < array.length) {
+			if (array[j] - array[i] == 2) {
+				count++;
 			}
+			i++;
+			j++;
 		}
-		int[] newArray = new int[list.size()];// Tạo một mảng mới có kích thước bằng với list
-		for (int i = 0; i < list.size(); i++) {// Chuyển các phần tử từ list sang mảng mới
-			newArray[i] = list.get(i);
+		i = 0;
+		j = 1;
+		int tempArray[] = new int[count];
+		count = 0;
+		while (count < tempArray.length && i < array.length - 1 && j < array.length) {
+			if (array[j] - array[i] == 2) {
+				tempArray[count] = array[i] + 1;
+				count++;
+			}
+			i++;
+			j++;
 		}
-		return newArray;// Trả về mảng mới
 
+		return tempArray;
+
+	}
+
+	// Input: 10 11 12 -1 14 10 17 19 20
+	// Output(k=3): 10 11 12 12 14 16 17 19 20
+
+	public int[] fillMissingValues(int k) {
+		
+		return array;
+		
+		
 	}
 
 	public static void main(String[] args) {
-//	        int[] array = {1, 2, 3};
-//	        MyArray ma = new MyArray(array);
-//	
-//	        int[] mirror = ma.mirror();
-//	        System.out.println(Arrays.toString(ma.mirror()));
-
-		// removeDuplicates
-//	        int[] array = {1, 3, 5, 1, 3 ,7 ,9 ,8};
-//	        Arrays.sort(array);
-//	        MyArray ma =new MyArray(array);
-//	        int[]noDup = ma.removeDulicates();
-//	        System.out.println(Arrays.toString(noDup));
+//		int[] arr = { 1, 2, 3 };
+//		MyArray ma = new MyArray(arr);
+//		System.out.println(Arrays.toString(ma.mirror()));
 //
-//	      
-		//getMissingValues
-//			int[] array = {10, 11 ,12, 13, 14, 16, 17, 19 ,20};
-//			MyArray ma = new MyArray(array);
-//			int [] missing = ma.getMissingValues();
-//			System.out.println(Arrays.toString(missing));
+//		int arr1[] = { 1, 3, 5, 1, 3, 7, 9, 8 };
+//		MyArray ma1 = new MyArray(arr1);
+//		System.out.println(Arrays.toString(ma1.removeDuplicates()));
 
+		int arr2[] = { 10, 11, 12, 13, 14, 16, 17, 19, 20 };
+		MyArray ma2 = new MyArray(arr2);
+		System.out.println(Arrays.toString(ma2.getMissingValues()));
+		
+		int arr3[] =  {10,11,12,-1,14,10,17,19,20};
+		MyArray ma3 = new MyArray(arr3);
+		System.out.println(Arrays.toString(ma3.fillMissingValues(3)));
 	}
 }
